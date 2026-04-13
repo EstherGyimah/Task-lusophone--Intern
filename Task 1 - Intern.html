@@ -86,7 +86,11 @@
 
       // FORMAT DATE FUNCTION
       function formatDate(dateString) {
-        const date = new Date(dateString);
+        const [year, month, day] = dateString.split("-").map(Number);
+
+        // Create date in LOCAL time (avoids UTC shift)
+        const date = new Date(year, month - 1, day);
+
         const options = { year: "numeric", month: "long", day: "numeric" };
         return date.toLocaleDateString("en-US", options);
       }
@@ -99,7 +103,9 @@
 
         const line = `Article "${item.title}" (Page ID ${item.page_id}) was created at ${formattedDate}.`;
 
-        resultsEl.innerHTML += line + "<br>";
+        const p = document.createElement("p");
+        p.textContent = line;
+        resultsEl.appendChild(p);
       });
     </script>
 
